@@ -40,13 +40,25 @@
             margin: 10px 0;
             color: #333;
         }
+
+        .btn {
+            cursor: pointer;
+            margin: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
     <h1>Location Gallery</h1>
-    <a href="https://www.gtamap.xyz/">Coordinates Map</a>
-    <br>
     <div id="gallery-container">
         <!-- Gallery items will be dynamically inserted here -->
     </div>
@@ -64,34 +76,23 @@
                     img.src = location.image;
                     img.alt = `Location ${location.locationId}`;
 
-                    const coordsText = `X: ${location.coords.x} Y: ${location.coords.y})`;
+                    const coordsText = `Coordinates: (${location.coords.x}, ${location.coords.y}, ${location.coords.z})`;
                     const coords = document.createElement('p');
                     coords.textContent = coordsText;
 
                     // Create the button
                     const button = document.createElement('button');
                     button.textContent = 'View on GTAMap';
-                    button.className = 'btn btn-light'; // Add styling class
+                    button.className = 'btn'; // Add styling class
 
                     button.onclick = () => {
-                        // Update the form inputs with the coordinates
-                        const xInput = document.getElementById('xinput');
-                        const yInput = document.getElementById('yinput');
+                        // Create URL with the parameters
+                        const url = new URL('https://www.gtamap.xyz/');
+                        url.searchParams.set('x', location.coords.x);
+                        url.searchParams.set('y', location.coords.y);
 
-                        if (xInput && yInput) {
-                            xInput.value = location.coords.x;
-                            yInput.value = location.coords.y;
-
-                            // Open the form URL in a new tab
-                            const form = document.getElementById('formular');
-                            const formAction = form.getAttribute('action') || 'https://www.gtamap.xyz/';
-                            const url = new URL(formAction);
-                            url.searchParams.set('x', encodeURIComponent(location.coords.x));
-                            url.searchParams.set('y', encodeURIComponent(location.coords.y));
-                            window.open(url.toString(), '_blank');
-                        } else {
-                            console.error('Form elements not found.');
-                        }
+                        // Open the URL in a new tab
+                        window.open(url.toString(), '_blank');
                     };
 
                     galleryItem.appendChild(img);
@@ -113,7 +114,6 @@
                 });
         });
     </script>
-
 
 </body>
 </html>
