@@ -54,6 +54,11 @@
         .btn:hover {
             background-color: #0056b3;
         }
+
+        /* Hidden form */
+        .hidden-form {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -63,11 +68,21 @@
         <!-- Gallery items will be dynamically inserted here -->
     </div>
 
+    <!-- Hidden form for submitting coordinates -->
+    <form action="https://www.gtamap.xyz/" method="post" class="hidden-form" id="hiddenForm">
+        <input type="hidden" id="xinput" name="xpoz">
+        <input type="hidden" id="yinput" name="ypoz">
+    </form>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Function to generate HTML for the gallery
             function generateGallery(locations) {
                 const galleryContainer = document.getElementById('gallery-container');
+                const hiddenForm = document.getElementById('hiddenForm');
+                const xInput = document.getElementById('xinput');
+                const yInput = document.getElementById('yinput');
+
                 locations.forEach(location => {
                     const galleryItem = document.createElement('div');
                     galleryItem.classList.add('gallery-item');
@@ -86,13 +101,10 @@
                     button.className = 'btn'; // Add styling class
 
                     button.onclick = () => {
-                        // Create URL with the parameters
-                        const url = new URL('https://www.gtamap.xyz/');
-                        url.searchParams.set('x', location.coords.x);
-                        url.searchParams.set('y', location.coords.y);
-
-                        // Open the URL in a new tab
-                        window.open(url.toString(), '_blank');
+                        // Set form inputs and submit the form
+                        xInput.value = location.coords.x;
+                        yInput.value = location.coords.y;
+                        hiddenForm.submit();
                     };
 
                     galleryItem.appendChild(img);
