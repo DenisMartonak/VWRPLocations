@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Gallery</title>
+    <style>
+        /* Basic styles for the gallery */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .gallery-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+        }
+
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gallery-item p {
+            margin: 10px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Location Gallery</h1>
+    <div id="gallery-container">
+        <!-- Gallery items will be dynamically inserted here -->
+    </div>
+
+    <script>
+        // Function to generate HTML for the gallery
+        function generateGallery(locations) {
+            const galleryContainer = document.getElementById('gallery-container');
+            locations.forEach(location => {
+                const galleryItem = document.createElement('div');
+                galleryItem.classList.add('gallery-item');
+
+                const img = document.createElement('img');
+                img.src = location.image;
+                img.alt = `Location ${location.locationId}`;
+
+                const coordsText = `Coordinates: (${location.coords.x}, ${location.coords.y}, ${location.coords.z})`;
+                const coords = document.createElement('p');
+                coords.textContent = coordsText;
+
+                galleryItem.appendChild(img);
+                galleryItem.appendChild(coords);
+
+                galleryContainer.appendChild(galleryItem);
+            });
+        }
+
+        // Fetch locations data from the JSON file
+        fetch('locations.json')
+            .then(response => response.json())
+            .then(data => {
+                generateGallery(data);
+            })
+            .catch(error => {
+                console.error('Error loading locations:', error);
+            });
+    </script>
+
+</body>
+</html>
