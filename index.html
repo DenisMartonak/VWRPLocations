@@ -67,39 +67,12 @@
                     img.src = location.image;
                     img.alt = `Location ${location.locationId}`;
 
-                    const coordsText = `X: ${location.coords.x} Y: ${location.coords.y})`;
+                    const coordsText = `X: ${location.coords.x} Y: ${location.coords.y}`;
                     const coords = document.createElement('p');
                     coords.textContent = coordsText;
 
-                    // Create the button
-                    const button = document.createElement('button');
-                    button.textContent = 'View on GTAMap';
-                    button.className = 'btn btn-light'; // Add styling class
-
-                    button.onclick = () => {
-                        // Update the form inputs with the coordinates
-                        const xInput = document.getElementById('xinput');
-                        const yInput = document.getElementById('yinput');
-
-                        if (xInput && yInput) {
-                            xInput.value = location.coords.x;
-                            yInput.value = location.coords.y;
-
-                            // Open the form URL in a new tab
-                            const form = document.getElementById('formular');
-                            const formAction = form.getAttribute('action') || 'https://www.gtamap.xyz/';
-                            const url = new URL(formAction);
-                            url.searchParams.set('x', encodeURIComponent(location.coords.x));
-                            url.searchParams.set('y', encodeURIComponent(location.coords.y));
-                            window.open(url.toString(), '_blank');
-                        } else {
-                            console.error('Form elements not found.');
-                        }
-                    };
-
                     galleryItem.appendChild(img);
                     galleryItem.appendChild(coords);
-                    galleryItem.appendChild(button);
 
                     galleryContainer.appendChild(galleryItem);
                 });
