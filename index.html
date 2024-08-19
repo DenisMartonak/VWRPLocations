@@ -40,49 +40,25 @@
             margin: 10px 0;
             color: #333;
         }
-
-        .btn {
-            cursor: pointer;
-            margin: 10px;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-
-        /* Hidden form */
-        .hidden-form {
-            display: none;
-        }
     </style>
 </head>
 <body>
 
     <h1>Location Gallery</h1>
+    <a href="https://www.gtamap.xyz/">Coordinates Map</a>
+    <br>
+    <br>
+    <br>
+    <br>
     <div id="gallery-container">
         <!-- Gallery items will be dynamically inserted here -->
     </div>
-
-    <!-- Hidden form for submitting coordinates -->
-    <form action="https://www.gtamap.xyz/" method="post" class="hidden-form" id="hiddenForm">
-        <input type="hidden" id="xinput" name="xpoz">
-        <input type="hidden" id="yinput" name="ypoz">
-    </form>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Function to generate HTML for the gallery
             function generateGallery(locations) {
                 const galleryContainer = document.getElementById('gallery-container');
-                const hiddenForm = document.getElementById('hiddenForm');
-                const xInput = document.getElementById('xinput');
-                const yInput = document.getElementById('yinput');
-
                 locations.forEach(location => {
                     const galleryItem = document.createElement('div');
                     galleryItem.classList.add('gallery-item');
@@ -91,20 +67,34 @@
                     img.src = location.image;
                     img.alt = `Location ${location.locationId}`;
 
-                    const coordsText = `Coordinates: (${location.coords.x}, ${location.coords.y}, ${location.coords.z})`;
+                    const coordsText = `X: ${location.coords.x} Y: ${location.coords.y})`;
                     const coords = document.createElement('p');
                     coords.textContent = coordsText;
 
                     // Create the button
                     const button = document.createElement('button');
                     button.textContent = 'View on GTAMap';
-                    button.className = 'btn'; // Add styling class
+                    button.className = 'btn btn-light'; // Add styling class
 
                     button.onclick = () => {
-                        // Set form inputs and submit the form
-                        xInput.value = location.coords.x;
-                        yInput.value = location.coords.y;
-                        hiddenForm.submit();
+                        // Update the form inputs with the coordinates
+                        const xInput = document.getElementById('xinput');
+                        const yInput = document.getElementById('yinput');
+
+                        if (xInput && yInput) {
+                            xInput.value = location.coords.x;
+                            yInput.value = location.coords.y;
+
+                            // Open the form URL in a new tab
+                            const form = document.getElementById('formular');
+                            const formAction = form.getAttribute('action') || 'https://www.gtamap.xyz/';
+                            const url = new URL(formAction);
+                            url.searchParams.set('x', encodeURIComponent(location.coords.x));
+                            url.searchParams.set('y', encodeURIComponent(location.coords.y));
+                            window.open(url.toString(), '_blank');
+                        } else {
+                            console.error('Form elements not found.');
+                        }
                     };
 
                     galleryItem.appendChild(img);
@@ -126,6 +116,7 @@
                 });
         });
     </script>
+
 
 </body>
 </html>
