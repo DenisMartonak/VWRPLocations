@@ -45,6 +45,7 @@
 <body>
 
     <h1>Location Gallery</h1>
+    <a href="https://www.gtamap.xyz/">Coordinates <Map></Map></a>
     <div id="gallery-container">
         <!-- Gallery items will be dynamically inserted here -->
     </div>
@@ -61,7 +62,7 @@
                 img.src = location.image;
                 img.alt = `Location ${location.locationId}`;
 
-                const coordsText = `Coordinates: (${location.coords.x}, ${location.coords.y}, ${location.coords.z})`;
+                const coordsText = `X: ${location.coords.x} \n Y: ${location.coords.y}`;
                 const coords = document.createElement('p');
                 coords.textContent = coordsText;
 
