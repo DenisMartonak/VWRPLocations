@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location Gallery</title>
+    <!-- Link to Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Basic styles for the gallery */
         body {
@@ -32,7 +34,8 @@
 
         .gallery-item img {
             max-width: 100%;
-            height: auto;
+            height: 150px; /* Set a fixed height for all images */
+            object-fit: cover;
             display: block;
         }
 
@@ -40,16 +43,46 @@
             margin: 10px 0;
             color: #333;
         }
+
+        .coords {
+            display: flex;
+            flex-direction: column; /* Stack X and Y vertically */
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .coords div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px; /* Add spacing between coordinates */
+        }
+
+        .copy-btn {
+            margin-left: 5px; /* Space between coordinate and button */
+            cursor: pointer;
+            padding: 5px;
+            background-color: #3d3d3d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the icon in the button */
+            width: 30px; /* Make button square */
+            height: 30px;
+        }
+
+        .copy-btn i {
+            font-size: 14px; /* Adjust icon size */
+        }
     </style>
 </head>
 <body>
 
     <h1>Location Gallery</h1>
     <a href="https://www.gtamap.xyz/">Coordinates Map</a>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br><br><br><br>
     <div id="gallery-container">
         <!-- Gallery items will be dynamically inserted here -->
     </div>
@@ -67,15 +100,46 @@
                     img.src = location.image;
                     img.alt = `Location ${location.locationId}`;
 
-                    const coordsText = `X: ${location.coords.x} Y: ${location.coords.y}`;
-                    const coords = document.createElement('p');
-                    coords.textContent = coordsText;
+                    const coordsContainer = document.createElement('div');
+                    coordsContainer.classList.add('coords');
+
+                    const xCoord = document.createElement('div');
+                    xCoord.innerHTML = `X: ${location.coords.x}`;
+                    
+                    const xButton = document.createElement('button');
+                    xButton.classList.add('copy-btn');
+                    xButton.innerHTML = `<i class="fa-regular fa-clipboard"></i>`;
+                    xButton.onclick = () => copyToClipboard(location.coords.x);
+
+                    const yCoord = document.createElement('div');
+                    yCoord.innerHTML = `Y: ${location.coords.y}`;
+                    
+                    const yButton = document.createElement('button');
+                    yButton.classList.add('copy-btn');
+                    yButton.innerHTML = `<i class="fa-regular fa-clipboard"></i>`;
+                    yButton.onclick = () => copyToClipboard(location.coords.y);
+
+                    xCoord.appendChild(xButton);
+                    yCoord.appendChild(yButton);
+
+                    coordsContainer.appendChild(xCoord);
+                    coordsContainer.appendChild(yCoord);
 
                     galleryItem.appendChild(img);
-                    galleryItem.appendChild(coords);
+                    galleryItem.appendChild(coordsContainer);
 
                     galleryContainer.appendChild(galleryItem);
                 });
+            }
+
+            function copyToClipboard(value) {
+                const tempInput = document.createElement('input');
+                document.body.appendChild(tempInput);
+                tempInput.value = value;
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert(`Copied: ${value}`);
             }
 
             // Fetch locations data from the JSON file
@@ -89,7 +153,6 @@
                 });
         });
     </script>
-
 
 </body>
 </html>
