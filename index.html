@@ -61,8 +61,8 @@
         .copy-btn {
             margin-left: 5px; /* Space between coordinate and button */
             cursor: pointer;
-            padding: 5px;
-            background-color: #3d3d3d;
+            padding: 15px;
+            background-color: #444444;
             color: white;
             border: none;
             border-radius: 4px;
@@ -71,17 +71,22 @@
             justify-content: center; /* Center the icon in the button */
             width: 30px; /* Make button square */
             height: 30px;
+            transition: background-color 0.3s;
         }
 
         .copy-btn i {
             font-size: 14px; /* Adjust icon size */
+        }
+
+        .copy-btn.copied {
+            background-color: #28a745; /* Change color when copied */
         }
     </style>
 </head>
 <body>
 
     <h1>Location Gallery</h1>
-    <a href="https://www.gtamap.xyz/">Coordinates Map</a>
+    <a href="https://www.gtamap.xyz/" target="_blank">Coordinates Map</a>
     <br><br><br><br>
     <div id="gallery-container">
         <!-- Gallery items will be dynamically inserted here -->
@@ -109,7 +114,7 @@
                     const xButton = document.createElement('button');
                     xButton.classList.add('copy-btn');
                     xButton.innerHTML = `<i class="fa-regular fa-clipboard"></i>`;
-                    xButton.onclick = () => copyToClipboard(location.coords.x);
+                    xButton.onclick = () => copyToClipboard(location.coords.x, xButton);
 
                     const yCoord = document.createElement('div');
                     yCoord.innerHTML = `Y: ${location.coords.y}`;
@@ -117,7 +122,7 @@
                     const yButton = document.createElement('button');
                     yButton.classList.add('copy-btn');
                     yButton.innerHTML = `<i class="fa-regular fa-clipboard"></i>`;
-                    yButton.onclick = () => copyToClipboard(location.coords.y);
+                    yButton.onclick = () => copyToClipboard(location.coords.y, yButton);
 
                     xCoord.appendChild(xButton);
                     yCoord.appendChild(yButton);
@@ -132,14 +137,23 @@
                 });
             }
 
-            function copyToClipboard(value) {
+            function copyToClipboard(value, button) {
                 const tempInput = document.createElement('input');
                 document.body.appendChild(tempInput);
                 tempInput.value = value;
                 tempInput.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
-                alert(`Copied: ${value}`);
+
+                // Show "Copied" text and change button color
+                button.innerHTML = "Copied";
+                button.classList.add('copied');
+
+                // Revert back to original icon after 1 second
+                setTimeout(() => {
+                    button.innerHTML = `<i class="fa-regular fa-clipboard"></i>`;
+                    button.classList.remove('copied');
+                }, 1000);
             }
 
             // Fetch locations data from the JSON file
