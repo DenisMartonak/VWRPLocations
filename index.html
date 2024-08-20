@@ -69,7 +69,7 @@
             display: flex;
             align-items: center;
             justify-content: center; /* Center the icon in the button */
-            width: 30px; /* Make button square */
+            width: 50px; /* Make button square */
             height: 30px;
             transition: background-color 0.3s;
         }
@@ -81,12 +81,16 @@
         .copy-btn.copied {
             background-color: #28a745; /* Change color when copied */
         }
+        a.visited {
+            color: black;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 
     <h1>Location Gallery</h1>
-    <a href="https://www.gtamap.xyz/" target="_blank">Coordinates Map</a>
+    <a href="https://www.gtamap.xyz/" target="_blank" style="text-decoration: none; color: black;">Coordinates Map</a>
     <br><br><br><br>
     <div id="gallery-container">
         <!-- Gallery items will be dynamically inserted here -->
